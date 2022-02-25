@@ -10,11 +10,17 @@ import Firebase
 
 
 class FirebaseRealTimeDBViewModel: ObservableObject {
+    private let database: Database
+    private lazy var ref: DatabaseReference = {
+        database.reference()
+    }()
     private let root = "Sample"
     private let userID: String
     private let names = ["taro" , "jiro" , "tanaka" , "sato" , "ninomiya"]
 
     init() {
+//        database = Database.database(url: "https://hogehoge/")
+        database = Database.database()
         userID = UUID().uuidString
         Auth.auth().signInAnonymously { authResult, error in
           debugLog("singin OK")
@@ -27,7 +33,7 @@ class FirebaseRealTimeDBViewModel: ObservableObject {
             "uid": userID
         ]
         
-        let reference = Database.database().reference().child(root).child(userID)
+        let reference = ref.child(root).child(userID)
         
         reference.setValue(childValuesToSet)
         debugLog(childValuesToSet)
@@ -43,7 +49,7 @@ class FirebaseRealTimeDBViewModel: ObservableObject {
             "timeStamp": ServerValue.timestamp(),
         ]
         
-        let reference = Database.database().reference().child(root).child(userID)
+        let reference = ref.child(root).child(userID)
         
         reference.childByAutoId().updateChildValues(detailValuesToSet)
         debugLog(detailValuesToSet)
