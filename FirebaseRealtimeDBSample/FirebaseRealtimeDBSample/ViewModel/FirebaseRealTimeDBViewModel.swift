@@ -34,7 +34,6 @@ class FirebaseRealTimeDBViewModel: ObservableObject {
     }
     
     func add() {
-        let childValuesToSet: [AnyHashable: Any]
         let detailValuesToSet: [AnyHashable: Any]
         
         detailValuesToSet = [
@@ -44,14 +43,9 @@ class FirebaseRealTimeDBViewModel: ObservableObject {
             "timeStamp": ServerValue.timestamp(),
         ]
         
-        childValuesToSet = [
-            UUID().uuidString: detailValuesToSet,
-        ]
+        let reference = Database.database().reference().child(root).child(userID).childByAutoId()
         
-        
-        let reference = Database.database().reference().child(root).child(userID)
-                
-        reference.updateChildValues(childValuesToSet)
-        debugLog(childValuesToSet)
+        reference.updateChildValues(detailValuesToSet)
+        debugLog(detailValuesToSet)
     }
 }
