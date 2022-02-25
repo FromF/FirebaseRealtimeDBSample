@@ -43,9 +43,9 @@ class FirebaseRealTimeDBViewModel: ObservableObject {
             "timeStamp": ServerValue.timestamp(),
         ]
         
-        let reference = Database.database().reference().child(root).child(userID).childByAutoId()
+        let reference = Database.database().reference().child(root).child(userID)
         
-        reference.updateChildValues(detailValuesToSet)
+        reference.childByAutoId().updateChildValues(detailValuesToSet)
         debugLog(detailValuesToSet)
     }
 }
